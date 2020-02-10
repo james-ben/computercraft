@@ -1,0 +1,2 @@
+immersive engineering spawn bullet
+replaceitem block ~ ~1 ~ slot.container.0 immersiveengineering:bullet 64 2 {bullet:wolfpack}
