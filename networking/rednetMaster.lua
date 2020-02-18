@@ -4,8 +4,15 @@
 modemSide = "top"
 modem = peripheral.wrap(modemSide)
 masterID = 1
+
 -- lookup table for modem numbers
-forceFieldID = 2
+addresses = {}
+addresses['forceField'] = 2
+addresses['entranceTurret'] = 3
+addresses['mainGateArrows'] = 4
+addresses['mainGate'] = 5
+addresses['mainGateTesla'] = 6
+
 
 -- sends a message to the master computer
 -- see https://computercraft.info/wiki/Modem.transmit
@@ -26,13 +33,21 @@ modem.open(masterID)
 
 -- run in this loop detecting things forever
 while true do
-	io.write('Enter an ID to connect to: ')
-	local nextID = io.read("*n")
-	io.write('\nEnter an message to send: ')
-	local nextMsg = io.read()
+    io.write('Enter an ID to connect to: ')
+    local nextID_str = io.read()
+	local nextID = tonumber(nextID_str)
+    if nextID == nil then
+        print("Error, not a number!")
+    else
+        io.write('Enter an message to send: ')
+        local nextMsg = io.read()
 	
-	sendMessage(nextID, nextMsg)
-	local retMsg = receiveMessage()
-	
-	io.write('Received ' .. retMsg .. ' from computer ' .. nextID .. '\n')
+        sendMessage(nextID, nextMsg)
+    
+        if nextMsg == "status" then
+            local retMsg = receiveMessage()
+            io.write('Received ' .. retMsg .. ' from computer ' .. nextID .. '\n')
+        end
+    io.write("\n")
+    end
 end
